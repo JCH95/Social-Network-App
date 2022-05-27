@@ -13,7 +13,7 @@ const thoughtController = {
     getThoughtById({ params }, res) {
         Thought.findOne({ _id: params.id })
             .populate({
-                path: 'thought',
+                path: 'reaction',
                 select: '-__v'
             })
             .select('-__v')
@@ -70,7 +70,7 @@ const thoughtController = {
             })
             .catch(err => res.status(400).json(err));
     },
-    addReaction({ params }, res) {
+    addReaction({ params, body }, res) {
         Thought.findOneAndUpdate(
             { _id: params.thoughtId },
             { $push: { reaction: body } },
