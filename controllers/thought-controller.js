@@ -46,7 +46,7 @@ const thoughtController = {
             })
             .then(dbThoughtData => {
                 if (!dbThoughtdata) {
-                    res.status(404).json({ message: 'No user found with this id' });
+                    res.status(404).json({ message: 'No thought found with this id' });
                     return;
                 }
                 res.json(dbThoughtData);
@@ -74,6 +74,21 @@ const thoughtController = {
                 res.json(dbThoughtData);
             })
             .catch(err => res.status(400).json(err));
+    },
+    addReaction({ params }, res) {
+        Thought.findOneAndUpdate(
+            { _id: params.friendId },
+            { $push: { friend: { reactionId: params.reactionId} } },
+            { new: true, runValidators: true }
+        )
+            .then(dbThoughtData => {
+                if (!dbThoughtData) {
+                    res.status(404).json({ message: 'No thought found with this id!' });
+                    return;
+                }
+                res.json(dbThoughtData);
+            })
+            .catch(err => res.json(err));
     },
 };
 
